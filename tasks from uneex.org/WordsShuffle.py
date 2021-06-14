@@ -1,0 +1,5 @@
+s1 = input()
+s2 = input()
+x = sorted(list(s1.lower()))
+y = sorted(list(s2.lower()))
+print(x == y)

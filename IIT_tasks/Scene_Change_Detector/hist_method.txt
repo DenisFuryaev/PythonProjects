@@ -1,0 +1,55 @@
+# GRADED FUNCTION: scene_change_detector
+
+def scene_change_detector(frames, threshold_luminance=0.1*1e8, threshold_edge_detection=750000, with_vis=False):
+    scene_changes = []
+    vis = []
+    metric_values = []
+    
+    ### START CODE HERE ###
+    # Ваши внешние переменные
+    prev_frame = None
+    metric_value_prev_lum = None
+    metric_value_curr_lum = None
+    ###  END CODE HERE  ###
+    
+    for idx, frame in tqdm(enumerate(frames), leave=False):
+        # frame - это кадр
+        # idx - это номер кадра
+        
+        ### START CODE HERE ###
+        # Основная часть вашего алгоритма
+        
+        metric_value_curr_lum = cv2.calcHist([cv2.cvtColor(frame, cv2.COLOR_RGB2YUV ) ],[0],None,[256],[0,256])
+        if prev_frame is not None:
+            # Находим расстояние между соседними кадрами
+            
+            metric_value_lum = np.mean((metric_value_prev_lum - metric_value_curr_lum)**2)
+            
+            #luminance = cv2.cvtColor(frame, cv2.COLOR_RGB2YUV)[:, :, 0]
+            #result_frame_x = cv2.Sobel(luminance,cv2.CV_64F,1,0,ksize=5)
+            #result_frame_y = cv2.Sobel(luminance,cv2.CV_64F,0,1,ksize=5)
+            #result_frame = np.sqrt(result_frame_x**2 + result_frame_y**2)
+            
+            #luminance_prev = cv2.cvtColor(prev_frame, cv2.COLOR_RGB2YUV)[:, :, 0]
+            #result_frame_prev_x = cv2.Sobel(luminance_prev,cv2.CV_64F,1,0,ksize=5)
+            #result_frame_prev_y = cv2.Sobel(luminance_prev,cv2.CV_64F,0,1,ksize=5)
+            #result_frame_prev = np.sqrt(result_frame_prev_x**2 + result_frame_prev_y**2)
+            
+            #metric_value_edge_detection = np.mean((result_frame.astype(np.int32) - result_frame_prev) ** 2)
+            
+            #if metric_value_edge_detection > threshold_edge_detection:
+            if metric_value_lum > threshold_luminance:
+                scene_changes.append(idx)
+                if with_vis:
+                    # Кадры в памяти занимают много места, поэтому сохраним лишь первые 100 срабатываний
+                    if len(vis) < 100:
+                        vis.append([prev_frame, frame])
+            metric_values.append(metric_value_lum)
+        else:
+            metric_values.append(0)
+        prev_frame = frame
+        metric_value_prev_lum = metric_value_curr_lum
+        
+        ###  END CODE HERE  ###
+
+    return scene_changes, vis, metric_values

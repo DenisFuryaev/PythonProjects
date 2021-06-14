@@ -1,0 +1,3 @@
+metric_value_prev_lum = cv2.calcHist([cv2.cvtColor(prev_frame, cv2.COLOR_RGB2YUV) ],[0],None,[256],[0,256])
+metric_value_curr_lum = cv2.calcHist([cv2.cvtColor(frame, cv2.COLOR_RGB2YUV ) ],[0],None,[256],[0,256])
+metric_value_lum = np.mean((metric_value_prev_lum - metric_value_curr_lum)**2)

@@ -1,0 +1,9 @@
+luminance = cv2.cvtColor(frame, cv2.COLOR_RGB2YUV)[:, :, 0]
+            result_frame_x = cv2.Sobel(luminance,cv2.CV_64F,1,0,ksize=5)
+            result_frame_y = cv2.Sobel(luminance,cv2.CV_64F,0,1,ksize=5)
+            result_frame = np.sqrt(result_frame_x**2 + result_frame_y**2)
+            
+            luminance_prev = cv2.cvtColor(prev_frame, cv2.COLOR_RGB2YUV)[:, :, 0]
+            result_frame_prev_x = cv2.Sobel(luminance_prev,cv2.CV_64F,1,0,ksize=5)
+            result_frame_prev_y = cv2.Sobel(luminance_prev,cv2.CV_64F,0,1,ksize=5)
+            result_frame_prev = np.sqrt(result_frame_prev_x**2 + result_frame_prev_y**2)
