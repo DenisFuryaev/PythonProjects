@@ -1,9 +1,0 @@
-opencv-python
-scikit-image
-scikit-video
-scikit-learn
-numpy
-scipy
-Pillow
-ffmpeg
-matplotlib
